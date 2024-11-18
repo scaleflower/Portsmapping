@@ -65,16 +65,22 @@ check_python_version() {
 # 检查Node.js版本
 check_nodejs_version() {
     log_info "检查Node.js版本..."
-    # 获取 Node.js 版本的主版本号，去掉 'v' 前缀
-    NODE_VERSION=$(node -v | cut -d'v' -f2 | cut -d. -f1)
     
-    if [[ $(echo "$NODE_VERSION" | tr -d '.') -ge 14 ]]; then
+    # 获取完整的 Node.js 版本号
+    NODE_VERSION=$(node -v | cut -d'v' -f2)
+    
+    # 设置最低版本要求
+    MIN_VERSION="14.0.0"
+    
+    # 比较版本号
+    if [[ $(echo -e "$NODE_VERSION\n$MIN_VERSION" | sort -V | head -n1) == "$MIN_VERSION" ]]; then
         log_info "Node.js版本检查通过: v$NODE_VERSION"
     else
         log_error "Node.js版本必须 >= 14.0，当前版本: v$NODE_VERSION"
         exit 1
     fi
 }
+
 
 # 创建项目目录
 create_project_structure() {
