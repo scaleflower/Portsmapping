@@ -49,14 +49,18 @@ install_base_dependencies() {
 
 check_python_version() {
     log_info "检查Python版本..."
+    
+    # 获取 Python 版本的主版本和次版本，并与 3.8 进行比较
     PYTHON_VERSION=$(python3 -c 'import platform; print(platform.python_version())' | cut -d. -f1-2)
-    if [[ "$(echo $PYTHON_VERSION | cut -d. -f1).$(echo $PYTHON_VERSION | cut -d. -f2)" -ge "3.8" ]]; then
+    
+    if [[ $(echo "$PYTHON_VERSION" | tr -d '.') -ge 38 ]]; then
         log_info "Python版本检查通过: $PYTHON_VERSION"
     else
         log_error "Python版本必须 >= 3.8，当前版本: $PYTHON_VERSION"
         exit 1
     fi
 }
+
 
 # 检查Node.js版本
 check_nodejs_version() {
