@@ -49,11 +49,12 @@ install_base_dependencies() {
 check_python_version() {
     log_info "检查Python版本..."
     PYTHON_VERSION=$(python3 -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
-    if (( $(echo "$PYTHON_VERSION 3.8" | awk '{print ($1 < $2)}') )); then
+    if (( $(echo "$PYTHON_VERSION 3.8" | awk '{print ($1 >= $2)}') )); then
+        log_info "Python版本检查通过: $PYTHON_VERSION"
+    else
         log_error "Python版本必须 >= 3.8，当前版本: $PYTHON_VERSION"
         exit 1
     fi
-    log_info "Python版本检查通过: $PYTHON_VERSION"
 }
 
 # 检查Node.js版本
@@ -272,10 +273,10 @@ main() {
     
     check_system
     install_base_dependencies
+    download_source_code
     check_python_version
     check_nodejs_version
     create_project_structure
-    download_source_code
     configure_environment
     setup_backend
     setup_frontend
