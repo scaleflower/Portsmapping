@@ -183,7 +183,7 @@ setup_frontend() {
     npm init -y
     
     # 安装依赖
-    npm install vue@next element-plus axios echarts pinia vue-router
+    npm install vue@3 element-plus axios echarts pinia vue-router
     npm install -D vite @vitejs/plugin-vue sass
     
     cd ..
