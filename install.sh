@@ -49,8 +49,13 @@ install_base_dependencies() {
 check_python_version() {
     log_info "检查Python版本..."
     PYTHON_VERSION=$(python3 -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
-    # 使用 bc 命令进行浮点数比较
-    if (( $(echo "$PYTHON_VERSION >= 3.8" | bc -l) )); then
+    
+    # 提取主版本号和次版本号
+    MAJOR_VERSION=$(echo "$PYTHON_VERSION" | cut -d. -f1)
+    MINOR_VERSION=$(echo "$PYTHON_VERSION" | cut -d. -f2)
+    
+    # 使用 [[ ]] 进行字符串比较
+    if [[ "$MAJOR_VERSION" -eq 3 && "$MINOR_VERSION" -ge 8 ]] || [[ "$MAJOR_VERSION" -gt 3 ]]; then
         log_info "Python版本检查通过: $PYTHON_VERSION"
     else
         log_error "Python版本必须 >= 3.8，当前版本: $PYTHON_VERSION"
